@@ -6,17 +6,17 @@
     <title>Advanced Password Generator</title>
     <style>
         :root {
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #475569;
-            --accent: #d91b42; /* LastPass-style crimson red */
+            --bg-color: #000000; /* Insanely black background */
+            --card-bg: #111111;  /* Very dark gray card to contrast against the pure black */
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --accent: #d91b42; 
             --accent-hover: #b91c1c;
-            --control-bg: #e2e8f0;
+            --control-bg: #1e293b;
             --strength-weak: #ef4444;
             --strength-medium: #f59e0b;
-            --strength-strong: #15803d; /* Dark green text */
-            --strength-bar-bg: #16a34a; /* Green bar */
+            --strength-strong: #15803d; 
+            --strength-bar-bg: #16a34a; 
         }
 
         * {
@@ -30,6 +30,7 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             display: flex;
+            flex-direction: column; 
             justify-content: center;
             align-items: center;
             min-height: 100vh;
@@ -46,6 +47,7 @@
             font-size: 2.2rem;
             margin-bottom: 10px;
             font-weight: 600;
+            color: #ffffff;
         }
 
         .subtitle {
@@ -63,7 +65,7 @@
             align-items: center;
             padding: 16px 24px;
             border-radius: 8px 8px 0 0;
-            border: 1px solid #cbd5e1;
+            border: 1px solid #2d3748; /* Darkened border for stealth look */
             border-bottom: none;
             position: relative;
         }
@@ -73,7 +75,7 @@
             font-size: 1.5rem;
             letter-spacing: 0.5px;
             word-break: break-all;
-            color: var(--text-main);
+            color: #38bdf8; /* Bright blue password text to pop off the dark theme */
             padding-right: 15px;
             text-align: left;
         }
@@ -98,13 +100,13 @@
         }
 
         .btn-refresh:hover {
-            background-color: #f1f5f9;
+            background-color: #222222;
         }
 
         .btn-refresh svg {
             width: 24px;
             height: 24px;
-            fill: #64748b;
+            fill: #94a3b8;
             transition: transform 0.3s ease;
         }
 
@@ -132,8 +134,8 @@
         .strength-wrapper {
             position: relative;
             background-color: var(--card-bg);
-            border-left: 1px solid #cbd5e1;
-            border-right: 1px solid #cbd5e1;
+            border-left: 1px solid #2d3748;
+            border-right: 1px solid #2d3748;
             height: 8px;
         }
 
@@ -146,8 +148,8 @@
 
         .strength-text-container {
             background-color: var(--card-bg);
-            border-left: 1px solid #cbd5e1;
-            border-right: 1px solid #cbd5e1;
+            border-left: 1px solid #2d3748;
+            border-right: 1px solid #2d3748;
             display: flex;
             justify-content: flex-end;
             padding: 4px 24px 0 24px;
@@ -168,10 +170,10 @@
 
         /* Settings Panel */
         .settings-container {
-            background-color: #e2f0d9; /* Light green tint like LastPass */
+            background-color: #0c150c; /* Deep dark green tint for the dark theme */
             padding: 30px 40px;
             border-radius: 0 0 8px 8px;
-            border: 1px solid #cbd5e1;
+            border: 1px solid #2d3748;
             border-top: none;
             text-align: left;
         }
@@ -187,7 +189,7 @@
         .label-length {
             font-weight: 600;
             min-width: 150px;
-            color: #0f172a;
+            color: #ffffff;
         }
 
         .slider-wrapper {
@@ -199,7 +201,7 @@
 
         input[type="range"] {
             flex-grow: 1;
-            accent-color: #475569;
+            accent-color: #ffffff;
             cursor: pointer;
         }
 
@@ -214,7 +216,7 @@
 
         .checkbox-label {
             font-weight: 600;
-            color: #0f172a;
+            color: #ffffff;
         }
 
         .checkbox-group {
@@ -229,14 +231,31 @@
             gap: 8px;
             cursor: pointer;
             font-size: 0.95rem;
-            color: #334155;
+            color: #cbd5e1;
         }
 
         input[type="checkbox"] {
             width: 18px;
             height: 18px;
-            accent-color: #0f172a;
+            accent-color: #ffffff;
             cursor: pointer;
+        }
+
+        /* Footer Styling */
+        footer {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -293,6 +312,10 @@
         </div>
     </div>
 
+    <footer>
+        Made by <a href="#" target="_blank">SonicstudiosMB</a>
+    </footer>
+
     <script>
         const displayEl = document.getElementById('password-display');
         const refreshBtnEl = document.getElementById('refresh-btn');
@@ -315,7 +338,6 @@
             symbol: '!@#$%^&*()_+~`|}{[]:;?><,./-='
         };
 
-        // Live calculation of password security depth
         function updateStrengthMeter(password, length) {
             let optionsCount = 0;
             if (uppercaseEl.checked) optionsCount++;
@@ -323,22 +345,21 @@
             if (numbersEl.checked) optionsCount++;
             if (symbolsEl.checked) optionsCount++;
 
-            // Simple ruleset to calculate strength visuals
             if (length < 8 || optionsCount <= 1) {
                 strengthBarEl.style.width = '30%';
-                strengthBarEl.style.backgroundColor = '#ef4444'; // Red
+                strengthBarEl.style.backgroundColor = '#ef4444'; 
                 strengthTextEl.innerText = 'Weak';
                 strengthTextEl.style.color = '#ef4444';
             } else if (length < 11 || optionsCount === 2) {
                 strengthBarEl.style.width = '60%';
-                strengthBarEl.style.backgroundColor = '#f59e0b'; // Orange
+                strengthBarEl.style.backgroundColor = '#f59e0b'; 
                 strengthTextEl.innerText = 'Medium';
-                strengthTextEl.style.color = '#d97706';
+                strengthTextEl.style.color = '#f59e0b';
             } else {
                 strengthBarEl.style.width = '100%';
-                strengthBarEl.style.backgroundColor = '#16a34a'; // Green
+                strengthBarEl.style.backgroundColor = '#16a34a'; 
                 strengthTextEl.innerText = 'Strong';
-                strengthTextEl.style.color = '#15803d';
+                strengthTextEl.style.color = '#16a34a';
             }
         }
 
@@ -378,26 +399,22 @@
                 generatedPassword.push(allowedChars[randomIndex]);
             }
 
-            // Shuffle pool array elements
             const finalPassword = generatedPassword.sort(() => Math.random() - 0.5).join('');
             displayEl.innerText = finalPassword;
             
             updateStrengthMeter(finalPassword, length);
         }
 
-        // Live slider text update + pass generation
         sliderEl.addEventListener('input', (e) => {
             lengthLabelEl.innerText = `Password Length: ${e.target.value}`;
             generatePassword();
         });
 
-        // Regenerate events
         refreshBtnEl.addEventListener('click', generatePassword);
         [uppercaseEl, lowercaseEl, numbersEl, symbolsEl].forEach(checkbox => {
             checkbox.addEventListener('change', generatePassword);
         });
 
-        // Copy Feature
         copyBtnEl.addEventListener('click', () => {
             const password = displayEl.innerText;
             if (!password || password === 'Select an option' || password === 'Generating...') return;
@@ -410,7 +427,6 @@
             });
         });
 
-        // Initial generation run on page load
         generatePassword();
     </script>
 </body>
